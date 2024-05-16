@@ -4,7 +4,14 @@ const User = require("./model/user");
 const env = require("dotenv").config();
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:3001/", ""],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 const mongoose = require("mongoose");
 
 console.log(process.env.MONGO_URL);
