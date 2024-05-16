@@ -4,26 +4,10 @@ const User = require("./model/user");
 const env = require("dotenv").config();
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    credentials: true,
-    origin: ["http://localhost:3000", ""],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors());
 const mongoose = require("mongoose");
 
 console.log(process.env.MONGO_URL);
-
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log(`http://localhost:` + process.env.PORT);
-    });
-  })
-  .catch((err) => console.log(err));
 
 app.post("/signup", async (req, resp) => {
   let user = new User(req.body);
@@ -42,5 +26,14 @@ app.post("/login", async (req, resp) => {
 app.get("/", async (req, resp) => {
   resp.send("DONE!!!!!!");
 });
+
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(`http://localhost:` + process.env.PORT);
+    });
+  })
+  .catch((err) => console.log(err));
 
 // app.listen(process.env.PORT);
